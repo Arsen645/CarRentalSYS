@@ -1,4 +1,4 @@
--- Drop child tables first
+
 
 DROP TABLE IF EXISTS PaymentReceipts;
 DROP TABLE IF EXISTS Invoices;
@@ -10,16 +10,16 @@ DROP TABLE IF EXISTS CustomerRates;
 DROP TABLE IF EXISTS CarClass;
 
 CREATE TABLE CarClass (
-    ClassID VARCHAR(4) NOT NULL,
+    ClassID SMALLINT NOT NULL AUTO_INCREMENT,
     ClassName VARCHAR(6) NOT NULL,
-    Description VARCHAR(6) NOT NULL,
+    Description VARCHAR(25) NOT NULL,
     MonthlyRate DECIMAL(8,2) NOT NULL,
     CONSTRAINT PK_CarClass PRIMARY KEY (ClassID)
 );
 
 CREATE TABLE CustomerRates (
-    CustomerRateID VARCHAR(2) NOT NULL,
-    RatingScore INT,
+    CustomerRateID TINYINT NOT NULL AUTO_INCREMENT,
+    RatingScore TINYINT,
     Discount DECIMAL(5,2),
     CONSTRAINT PK_CustomerRates PRIMARY KEY (CustomerRateID)
 );
@@ -28,9 +28,9 @@ CREATE TABLE Cars (
     PlateNo VARCHAR(12) NOT NULL,
     Brand VARCHAR(20) NOT NULL,
     Model VARCHAR(25) NOT NULL,
-    Year INT NOT NULL,
+    Year SMALLINT NOT NULL,
     Status VARCHAR(1) NOT NULL,
-    CarClassID VARCHAR(4) NOT NULL,
+    CarClassID SMALLINT NOT NULL,
     CONSTRAINT PK_Cars PRIMARY KEY (PlateNo),
     CONSTRAINT FK_Cars_CarClass 
         FOREIGN KEY (CarClassID) 
@@ -38,11 +38,11 @@ CREATE TABLE Cars (
 );
 
 CREATE TABLE Customers (
-    CustomerID VARCHAR(4) NOT NULL,
+    CustomerID SMALLINT NOT NULL AUTO_INCREMENT,
     CorporateName VARCHAR(25) NOT NULL,
     Email VARCHAR(30),
     Phone VARCHAR(12),
-    CustomerRate VARCHAR(2),
+    CustomerRate TINYINT,
     CONSTRAINT PK_Customers PRIMARY KEY (CustomerID),
     CONSTRAINT FK_Customers_CustomerRates
         FOREIGN KEY (CustomerRate)
@@ -50,8 +50,8 @@ CREATE TABLE Customers (
 );
 
 CREATE TABLE Rentals (
-    RentID VARCHAR(4) NOT NULL,
-    CustomerID VARCHAR(4) NOT NULL,
+    RentID SMALLINT NOT NULL AUTO_INCREMENT,
+    CustomerID SMALLINT NOT NULL,
     StartDate DATE NOT NULL,
     FinishDate DATE,
     Status VARCHAR(1) NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE Rentals (
 );
 
 CREATE TABLE RentalCars (
-    RentID VARCHAR(4) NOT NULL,
+    RentID SMALLINT NOT NULL AUTO_INCREMENT,
     PlateNo VARCHAR(12) NOT NULL,
     CONSTRAINT PK_RentalCars PRIMARY KEY (RentID, PlateNo),
     CONSTRAINT FK_RentalCars_Rentals
@@ -74,8 +74,8 @@ CREATE TABLE RentalCars (
 );
 
 CREATE TABLE Invoices (
-    InvoiceID VARCHAR(6) NOT NULL,
-    RentID VARCHAR(4) NOT NULL,
+    InvoiceID SMALLINT NOT NULL AUTO_INCREMENT,
+    RentID SMALLINT NOT NULL,
     Amount DECIMAL(8,2) NOT NULL,
     CONSTRAINT PK_Invoices PRIMARY KEY (InvoiceID),
     CONSTRAINT FK_Invoices_Rentals
@@ -84,8 +84,8 @@ CREATE TABLE Invoices (
 );
 
 CREATE TABLE PaymentReceipts (
-    PaymentID VARCHAR(6) NOT NULL,
-    InvoiceID VARCHAR(6) NOT NULL,
+    PaymentID SMALLINT NOT NULL AUTO_INCREMENT,
+    InvoiceID SMALLINT NOT NULL,
     Amount DECIMAL(8,2) NOT NULL,
     PaymentDate DATE,
     CONSTRAINT PK_PaymentReceipts PRIMARY KEY (PaymentID),
@@ -93,6 +93,7 @@ CREATE TABLE PaymentReceipts (
         FOREIGN KEY (InvoiceID)
         REFERENCES Invoices(InvoiceID)
 );
+
 
 
 
